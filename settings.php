@@ -58,7 +58,6 @@
 				<tr valign="top">
 					<th scope="row">Editor</th>
 					<td>
-						<p><?php sch_checkbox("core_autosave", "Disable Post Autosaving", $options['core_autosave']); ?></p>
 						<p><?php sch_checkbox("editor_hidecustomfields", "Hide Custom Fields", $options['editor_hidecustomfields']); ?></p>
 						<p><?php sch_checkbox("editor_hideexcerpt", "Hide Excerpt", $options['editor_hideexcerpt']); ?></p>
 						<p><?php sch_checkbox("editor_hidetrackbacks", "Hide Trackbacks", $options['editor_hidetrackbacks']); ?></p>

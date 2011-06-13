@@ -9,7 +9,7 @@ Plugin Name: Simple CMS Hacks
 Description: This handy little plugin hacks, cracks and phreaks some of the core features and settings in Wordpress to make it a more suitable content management system. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 2.3
+Version: 2.4
 */
 
 /** 
@@ -45,8 +45,7 @@ class SimpleCMS {
 		'editor_hidecustomfields' => false,
 		'editor_hideexcerpt' => false,
 		'editor_hidetrackbacks' => false,
-		'core_adminbar' => true,
-		'core_autosave' => false,
+		'core_adminbar' => false,
 		'core_updates' => true,
 		'core_flashupload' => false,
 	);
@@ -88,7 +87,6 @@ class SimpleCMS {
 					'editor_hideexcerpt' => ($_POST['editor_hideexcerpt']) ? true : false,
 					'editor_hidetrackbacks' => ($_POST['editor_hidetrackbacks']) ? true : false,
 					'core_adminbar' => ($_POST['core_adminbar']) ? true : false,
-					'core_autosave' => ($_POST['core_autosave']) ? true : false,
 					'core_updates' => ($_POST['core_updates']) ? true : false,
 					'core_flashupload' => ($_POST['core_flashupload']) ? true : false,
 				);			
@@ -217,17 +215,6 @@ if ($simple_cms->options['core_flashupload']) {
 	        header("Location: " . $file . "?flash=1");
 	    }
 	}
-}
-
-/** 
- * Disable Autosave
- */
-
-if ($simple_cms->options['core_autosave']) {
-	function disable_autosave () {
-		wp_deregister_script('autosave');
-	}
-	add_action('wp_print_scripts','disable_autosave');
 }
 
 /** 
@@ -496,15 +483,6 @@ function simple_favorite_actions ($actions) {
 	}
 	return $actions;
 }
-
-/** 
- * JavaScript Hack to "Forget" Admin Menu State
- */
-
-function simple_cms_scripts () {
-	echo "<script type=\"text/javascript\">for (setting in getAllUserSettings()) if (/^m[0-9]{1,2}$/.test(setting)) deleteUserSetting(setting);</script>\n";
-}
-add_action('admin_print_scripts','simple_cms_scripts');
 
 /* 
  * End Plugin Actions
