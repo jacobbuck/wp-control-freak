@@ -9,7 +9,7 @@ Plugin Name: Simple CMS Hacks
 Description: This handy little plugin hacks, cracks and phreaks some of the core features and settings in Wordpress to make it a more suitable content management system. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 2.4
+Version: 2.4.1
 */
 
 /** 
@@ -129,21 +129,20 @@ class SimpleCMS {
 	}
 	
 	public function install () {
-		if (!get_option('simple_cms')) {
-			
+		if (! get_option('simple_cms')) {
 			add_option('simple_cms',json_encode($ths->default_options),'','yes');
 		}
 	}
 	
-	public function add_settings_link ( $links, $file ) {
-		if ( $file == 'simple-cms/index.php' ) {
+	public function add_settings_link ($links, $file) {
+		if ($file == 'simple-cms/index.php') {
 			$links[] = '<a href="options-general.php?page=simple-cms">'.__('Settings').'</a>';
 		}
 		return $links;
 	}
 	
 	public function add_settings_submenu () {
-		add_submenu_page('options-general.php', 'Simple CMS', 'Simple CMS', 1, 'simple-cms', array($this,'settings_page'));
+		add_submenu_page('options-general.php', 'Simple CMS', 'Simple CMS', 'manage_options', 'simple-cms', array($this,'settings_page'));
 	}
 	
 	public function settings_page () {
