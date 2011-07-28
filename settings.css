@@ -1,0 +1,44 @@
+input[type="submit"].submitdelete {
+	display: inline;
+	margin: 3px 0;
+	border: none;
+	border-bottom: solid 1px;
+	-moz-border-radius: 0;
+	-khtml-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	cursor: pointer;
+}
+.stuffbox.disabled .inside {
+	display: none;
+}
+.stuffbox h3 {
+	cursor: default;
+}
+.stuffbox h3 .checkbox {
+	margin-right: 8px;
+	vertical-align: baseline;
+	cursor: pointer;
+}
+.stuffbox ul.fields {
+	list-style: none;
+	margin: 1em 0;
+	max-width: 655px;
+}
+.stuffbox ul.fields li {
+	display: inline-block;
+	width: 160px; height: 21px;
+	vertical-align: middle;
+}
+.stuffbox ul.fields li span {
+	width: 50px;
+	display: inline-block;
+}
+.stuffbox ul.fields li .checkbox {
+	margin-right: 4px;
+	vertical-align: baseline;
+	cursor: pointer;
+}
+.stuffbox ul.fields li .textbox {
+	width: 100px;
+}
