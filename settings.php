@@ -1,15 +1,8 @@
-<?php
-/**
- * @package SimpleCMS
- * @author Jacob Buck
- */
-
-?>
 <div class="wrap">
 	
-	<div class="icon32" id="icon-options-general"><br></div><h2>Simple CMS Settings</h2>
+	<div class="icon32" id="icon-options-general"><br></div><h2>Control Freak Settings</h2>
 	
-	<?php if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'true') : ?>
+	<?php if (isset($_GET["settings-updated"]) && $_GET["settings-updated"] === "true") : ?>
 	<div class="updated settings-error" id="setting-error-settings_updated"> 
 	<p><strong>Settings saved.</strong></p></div>
 	<?php endif; ?>
@@ -22,10 +15,10 @@
 					<div class="submitbox">
 						<div id="major-publishing-actions">
 							<div id="delete-action">
-								<input name="revert" type="submit" class="submitdelete deletion" value="Revert to defaults">
+								<input name="controlfreak[revert]" type="submit" class="submitdelete deletion" value="Revert to defaults">
 							</div>
 							<div id="publishing-action">
-								<input name="save" type="submit" class="button-primary" value="Save Changes">
+								<input name="controlfreak[save]" type="submit" class="button-primary" value="Save Changes">
 							</div>
 							<div class="clear"></div>
 						</div>
@@ -36,86 +29,91 @@
 				<div id="post-body-content">
 				
 					<div class="stuffbox">
-						<h3><label><input type="checkbox" name="" class="checkbox"><span>Posts</span></label></h3>
+						<h3><label><?php cf_checkbox(array("posts","enabled"),$options["posts"]["enabled"]); ?><span>Posts</span></label></h3>
 						<div class="inside">
 							
 							<p><b>Rename</b></p>
 						
 							<ul class="fields">
-								<li><label><span>Name</span> <input type="text" name="" value="" placeholder="Posts" class="textbox"></label></li>
-								<li><label><span>Singular</span> <input type="text" name="" value="" placeholder="Post" class="textbox"></label></li>
+								<li><label><span>Name</span> <?php cf_textbox(array("posts","rename","name"),$options["posts"]["rename"]["name"],"Posts") ?></label></li>
+								<li><label><span>Singular</span> <?php cf_textbox(array("posts","rename","singular_name"),$options["posts"]["rename"]["singular_name"],"Post"); ?></label></li>
 							</ul>
 							
 							<p><b>Supports</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Title</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Editor</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Author</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Excerpt</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Trackbacks</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Custom Fields</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Comments</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Revisions</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","title"),$options["posts"]["supports"]["title"]); ?> Title</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","editor"),$options["posts"]["supports"]["editor"]); ?> Editor</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","author"),$options["posts"]["supports"]["author"]); ?> Author</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","excerpt"),$options["posts"]["supports"]["excerpt"]); ?> Excerpt</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","trackbacks"),$options["posts"]["supports"]["trackbacks"]); ?> Trackbacks</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","custom-fields"),$options["posts"]["supports"]["custom-fields"]); ?> Custom Fields</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","comments"),$options["posts"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
+								<li><label><?php cf_checkbox(array("posts","supports","revisions"),$options["posts"]["supports"]["revisions"]); ?> Revisions</label></li>
 							</ul>
 							
 							<p><b>Taxonomies</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Categories</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Post Tags</label></li>
+								<li><label><?php cf_checkbox(array("posts","taxonomies","category"),$options["posts"]["taxonomies"]["category"]); ?> Categories</label></li>
+								<li><label><?php cf_checkbox(array("posts","taxonomies","post_tag"),$options["posts"]["taxonomies"]["post_tag"]); ?> Post Tags</label></li>
 							</ul>
 						
 						</div>
 					</div>
 				
 					<div class="stuffbox">
-						<h3><label><input type="checkbox" name="" class="checkbox"><span>Links</span></label></h3>
+						<h3><label><?php cf_checkbox(array("links","enabled"),$options["links"]["enabled"]); ?><span>Links</span></label></h3>
 						<div class="inside">
 						</div>
 					</div>
 				
 					<div class="stuffbox">
-						<h3><label><input type="checkbox" name="" class="checkbox"><span>Pages</span></label></h3>
+						<h3><label><?php cf_checkbox(array("pages","enabled"),$options["pages"]["enabled"]); ?><span>Pages</span></label></h3>
 						<div class="inside">
 						
 							<p><b>Supports</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Title</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Editor</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Author</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Excerpt</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Trackbacks</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Custom Fields</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Comments</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Revisions</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","title"),$options["pages"]["supports"]["title"]); ?> Title</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","editor"),$options["pages"]["supports"]["editor"]); ?> Editor</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","author"),$options["pages"]["supports"]["author"]); ?> Author</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","excerpt"),$options["pages"]["supports"]["excerpt"]); ?> Excerpt</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","trackbacks"),$options["pages"]["supports"]["trackbacks"]); ?> Trackbacks</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","custom-fields"),$options["pages"]["supports"]["custom-fields"]); ?> Custom Fields</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","comments"),$options["pages"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
+								<li><label><?php cf_checkbox(array("pages","supports","revisions"),$options["pages"]["supports"]["revisions"]); ?> Revisions</label></li>
 							</ul>
 						
 						</div>
 					</div>
 				
 					<div class="stuffbox">
-						<h3><label><input type="checkbox" name="" class="checkbox"><span>Comments</span></label></h3>
+						<h3><label><?php cf_checkbox(array("comments","enabled"),$options["comments"]["enabled"]); ?><span>Comments</span></label></h3>
 						<div class="inside">
 						</div>
 					</div>
 				
 					<div class="stuffbox">
-						<h3><span>Site</span></h3>
+						<h3><span>Front End</span></h3>
 						<div class="inside">
 						
-							<p><b>Remove Head Tags</b></p>
+							<p><b>Remove Meta Tags</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Remote Publishing</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> RSS Feeds</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Posts rel links</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Generator</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> l190n.js</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Admin Bar Margin</label></li>
+								<li><label><?php cf_checkbox(array("frontend","remove","remotepub"),$options["frontend"]["remove"]["remotepub"]); ?> Remote Publishing</label></li>
+								<li><label><?php cf_checkbox(array("frontend","remove","rssfeeds"),$options["frontend"]["remove"]["rssfeeds"]); ?> RSS Feeds</label></li>
+								<li><label><?php cf_checkbox(array("frontend","remove","postrel"),$options["frontend"]["remove"]["postrel"]); ?> Posts Rel Links</label></li>
+								<li><label><?php cf_checkbox(array("frontend","remove","generator"),$options["frontend"]["remove"]["generator"]); ?> Generator</label></li>
 							</ul>
-																		
+							
+							<p><b>Remove Scripts &amp; Styles</b></p>
+						
+							<ul class="fields">
+								<li><label><?php cf_checkbox(array("frontend","remove","l10n"),$options["frontend"]["remove"]["l10n"]); ?> Localization (l10n)</label></li>
+								<li><label><?php cf_checkbox(array("frontend","remove","adminbar_margin"),$options["frontend"]["remove"]["adminbar_margin"]); ?> Admin Bar Margin</label></li>
+							</ul>
+							
 						</div>
 					</div>
 									
@@ -126,41 +124,39 @@
 							<p><b>Dashboard</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Right Now</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Recent Comments</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Incoming Links</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Plugins</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> QuickPress</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Recent Drafts</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> WordPress Blog</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Other WordPress News</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","right_now"),$options["admin"]["dashboard"]["right_now"]); ?> Right Now</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","recent_comments"),$options["admin"]["dashboard"]["recent_comments"],($options["comments"]["enabled"]!="on")); ?> Recent Comments</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","incoming_links"),$options["admin"]["dashboard"]["incoming_links"]); ?> Incoming Links</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","plugins"),$options["admin"]["dashboard"]["plugins"]); ?> Plugins</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","quickpress"),$options["admin"]["dashboard"]["quickpress"],($options["posts"]["enabled"]!="on")); ?> QuickPress</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","recent_drafts"),$options["admin"]["dashboard"]["recent_drafts"]); ?> Recent Drafts</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","primary"),$options["admin"]["dashboard"]["primary"]); ?> WordPress Blog</label></li>
+								<li><label><?php cf_checkbox(array("admin","dashboard","secondary"),$options["admin"]["dashboard"]["secondary"]); ?> Other WordPress News</label></li>
 							</ul>
 												
 							<p><b>Menu</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Pages before Posts</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Hide Plugins</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Hide Tools</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Hide Editors</label></li>
+								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"]); ?> Pages before Posts</label></li>
+								<li><label><?php cf_checkbox(array("admin","menu","hide_plugins"),$options["admin"]["menu"]["hide_plugins"]); ?> Hide Plugins</label></li>
+								<li><label><?php cf_checkbox(array("admin","menu","hide_tools"),$options["admin"]["menu"]["hide_tools"]); ?> Hide Tools</label></li>
 							</ul>
 						
 							<p><b>Roles</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Subscriber</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Contributor</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Author</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Editor</label></li>
+								<li><label><?php cf_checkbox(array("admin","roles","subscriber"),$options["admin"]["roles"]["subscriber"]); ?> Subscriber</label></li>
+								<li><label><?php cf_checkbox(array("admin","roles","contributor"),$options["admin"]["roles"]["contributor"]); ?> Contributor</label></li>
+								<li><label><?php cf_checkbox(array("admin","roles","author"),$options["admin"]["roles"]["author"]); ?> Author</label></li>
+								<li><label><?php cf_checkbox(array("admin","roles","editor"),$options["admin"]["roles"]["editor"]); ?> Editor</label></li>
 							</ul>
 												
 							<p><b>Advanced</b></p>
 						
 							<ul class="fields">
-								<li><label><input type="checkbox" name="" class="checkbox"> Disable Admin Bar</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Disable Update Checks</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Force Flash Uploader</label></li>
-								<li><label><input type="checkbox" name="" class="checkbox"> Strict TinyMCE Pasting</label></li>
+								<li><label><?php cf_checkbox(array("admin","advanced","disable_adminbar"),$options["admin"]["advanced"]["disable_adminbar"]); ?> Disable Admin Bar</label></li>
+								<li><label><?php cf_checkbox(array("admin","advanced","disable_updates"),$options["admin"]["advanced"]["disable_updates"]); ?> Disable Update Checks</label></li>
+								<li><label><?php cf_checkbox(array("admin","advanced","tinymce_strictpasting"),$options["admin"]["advanced"]["tinymce_strictpasting"]); ?> Strict TinyMCE Pasting</label></li>
 							</ul>
 												
 						</div>
@@ -170,146 +166,32 @@
 			</div>
 		</div>
 	</form>
-	
-	<h2>Old Form</h2>
-	
-	<form action="" method="post" accept-charset="utf-8">
-		<table class="form-table">
-			<tbody>
-				<tr valign="top">
-					<th scope="row">Basics</th>
-					<td>
-						<p><?php sch_checkbox("disable_posts", "Disable Posts", $options['disable_posts']); ?></p>
-						<p><?php sch_checkbox("disable_links", "Disable Links", $options['disable_links']); ?></p>
-						<p><?php sch_checkbox("disable_comments", "Disable Comments", $options['disable_comments']); ?></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Dashboard</th>
-					<td>
-						<p><?php sch_checkbox("dash_comments", "Remove Recent Comments", $options['dash_comments']); ?></p>
-						<p><?php sch_checkbox("dash_drafts", "Remove Recent Drafts", $options['dash_drafts']); ?></p>
-						<p><?php sch_checkbox("dash_incoming", "Remove Incoming Links", $options['dash_incoming']); ?></p>
-						<p><?php sch_checkbox("dash_quickpress", "Remove QuickPress", $options['dash_quickpress']); ?></p>
-						<p><?php sch_checkbox("dash_rightnow", "Remove Right Now", $options['dash_rightnow']); ?></p>
-						<p><?php sch_checkbox("dash_feeds", "Remove WordPress News and Plugins", $options['dash_feeds']); ?></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Menu</th>
-					<td>
-						<p><?php sch_checkbox("menu_pagesabove", "Move Pages above Posts", $options['menu_pagesabove']); ?></p>
-						<p><?php sch_checkbox("menu_hidetools", "Hide Tools", $options['menu_hidetools']); ?></p>
-					</td>
-				</tr>		
-				<tr valign="top">
-					<th scope="row">Posts</th>
-					<td>
-						<p><?php sch_checkbox("menu_renameposts", "Rename Posts to", $options['menu_renameposts']); ?>&nbsp;
-							<input type="text" name="menu_renameposts_name" value="<?php echo $options['menu_renameposts_name']; ?>" id="menu_renameposts_name" title="Name">
-							<input type="text" name="menu_renameposts_singular" value="<?php echo $options['menu_renameposts_singular']; ?>" id="menu_renameposts_singular" title="Singular Name">
-						</p>
-						<p><?php sch_checkbox("posts_hideauthor", "Hide Author", $options['posts_hideauthor']); ?></p>
-						<p><?php sch_checkbox("posts_hidecategories", "Hide Categories", $options['posts_hidecategories']); ?></p>
-						<p><?php sch_checkbox("posts_hidetags", "Hide Post Tags", $options['posts_hidetags']); ?></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Editor</th>
-					<td>
-						<p><?php sch_checkbox("editor_hidecustomfields", "Hide Custom Fields", $options['editor_hidecustomfields']); ?></p>
-						<p><?php sch_checkbox("editor_hideexcerpt", "Hide Excerpt", $options['editor_hideexcerpt']); ?></p>
-						<p><?php sch_checkbox("editor_hidetrackbacks", "Hide Trackbacks", $options['editor_hidetrackbacks']); ?></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Advanced</th>
-					<td>
-						<p><?php sch_checkbox("core_adminbar", "Disable Admin Bar", $options['core_adminbar']); ?></p>
-						<p><?php sch_checkbox("core_updates", "Disable Core &amp; Plugin Update Checking", $options['core_updates']); ?></p>
-						<p><?php sch_checkbox("core_flashupload", "Force Flash Uploader", $options['core_flashupload']); ?></p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p>
-			<input type="submit" value="Save Changes" class="button-primary" id="sch_submit" name="sch_submit">&nbsp;
-			<input type="submit" value="Reset to Defaults" class="button-secondary" id="sch_reset" name="sch_reset">
-		</p>
-	</form>
-	
-	<br>
-	
-	<a name="maintenance"></a>
-	
-	<div class="icon32" id="icon-tools"><br></div><h2>Maintenance</h2>
-	
-	<?php if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'maintenance') : ?>
-	<div class="updated settings-error" id="setting-error-settings_updated"> 
-	<p><strong>Maintenance finished.</strong></p></div>
-	<?php endif; ?>
-	
-	<form action="" method="post" accept-charset="utf-8">		
-		<table class="form-table">
-			<tbody>
-				<tr valign="top">
-					<th scope="row">Clean Posts</th>
-					<td>
-						<p><?php sch_checkbox("delete_revisions", "Delete Revisions"); ?></p>
-						<p><?php sch_checkbox("delete_trash", "Empty Trash"); ?></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Comments</th>
-					<td>
-						<p><select name="bulk_comments">
-							<option value="">&mdash; Select &mdash;</option>
-							<option value="closed">Close All Discussions</option>
-							<option value="open">Open All Discussions</option>
-						</select></p>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Pingbacks</th>
-					<td>
-						<p><select name="bulk_pingbacks">
-							<option value="">&mdash; Select &mdash;</option>
-							<option value="closed">Close All Pingbacks</option>
-							<option value="open">Open All Pingbacks</option>
-						</select></p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p>
-			<input type="submit" value="Execute" class="button-primary" id="sch_maintenance" name="sch_maintenance">
-		</p>
-	</form>
-	
-	<br>
-	
+		
 </div>
-
-<script type="text/javascript">
+<script>
 (function($){
-	toggle_check_field('#menu_renameposts','#menu_renameposts_name, #menu_renameposts_singular')
-	$('#menu_renameposts').change(function(){
-		toggle_check_field('#menu_renameposts','#menu_renameposts_name, #menu_renameposts_singular')
+	$("h3 .checkbox", ".stuffbox").each(function(){
+		var $checkbox = $(this),
+			$stuffbox = $checkbox.closest(".stuffbox"),
+			update_stuffbox = (function(){
+				if ($checkbox.prop("checked")) {
+					$stuffbox.removeClass("disabled");
+				} else {
+					$stuffbox.addClass("disabled");
+				}
+			});
+		update_stuffbox();
+		$checkbox.change(update_stuffbox);
 	});
-	function toggle_check_field (check,field) {
-		$checkbox = $(check);
-		$textbox = $(field);
-		if ($checkbox.attr('checked')) {
-			$textbox.removeAttr('disabled');
-		} else {
-			$textbox.attr('disabled','disabled');
-		}
-	}
 })(this.jQuery);
 </script>
-
 <?php
 
-function sch_checkbox ($name,$label,$checked=false) {
-	echo '<label><input type="checkbox" name="'.$name.'" id="'.$name.'"'.(($checked)?' checked':'').'> '.$label.'</label>';
+function cf_checkbox ($name,$value="",$disabled=false) {
+	echo "<input type=\"checkbox\" name=\"controlfreak[".implode("][",$name)."]\" class=\"checkbox\"".(($value=="on")?" checked":"").(($disabled)?" disabled":"").">";
 }
+function cf_textbox ($name,$value="",$placehoder="",$disabled=false) {
+	echo "<input type=\"text\" name=\"controlfreak[".implode("][",$name)."]\" class=\"textbox\" value=\"$value\" placeholder=\"$placehoder\" ".(($disabled)?" disabled":"").">";
+}
+
+?>
