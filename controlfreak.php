@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User"s discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a
+Version: 3.0a2
 */
 
 class ControlFreak {
@@ -70,8 +70,8 @@ class ControlFreak {
 		
 		// Pages
 		if ($this->options["pages"]["enabled"] == "on") {
-			foreach ($this->options["posts"]["supports"] as $support => $value) {
-				if ($value == "off") remove_post_type_support("post",$support);
+			foreach ($this->options["pages"]["supports"] as $support => $value) {
+				if ($value == "off") remove_post_type_support("page",$support);
 			}
 		} else if ($this->options["pages"]["enabled"] == "off") {
 			unset($wp_post_types["page"]);
