@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User"s discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a2
+Version: 3.0a3
 */
 
 class ControlFreak {
@@ -21,6 +21,7 @@ class ControlFreak {
 		add_action("admin_menu", array($this,"admin_menu"));
 		add_action("wp_dashboard_setup", array($this,"wp_dashboard_setup"));
 		add_filter("tiny_mce_before_init",array($this,"tiny_mce_before_init"));
+		add_action("wp_before_admin_bar_render",array($this,"wp_before_admin_bar_render"));
 		// Filters
 		add_filter("plugin_action_links", array($this,"add_settings_link"), 10, 2 );
 	}
@@ -201,7 +202,7 @@ class ControlFreak {
 	
 	/* Tiny MCE Init */
 	
-	function tiny_mce_before_init ($init) {
+	public function tiny_mce_before_init ($init) {
 		if ($this->options["admin"]["advanced"]["tinymce_strictpasting"] == "on") {
 			$init["paste_auto_cleanup_on_paste"] = true;
 			$init["paste_remove_spans"] = true;
@@ -209,6 +210,19 @@ class ControlFreak {
 			$init["paste_remove_styles_if_webkit"] = true;
 		}
 		return $init;
+	}
+	
+	/* Admin Bar */	
+	
+	function wp_before_admin_bar_render () {
+		global $wp_admin_bar;
+		// check if admin bar not disabled
+		if ($this->options["admin"]["advanced"]["disable_adminbar"] != "on") {
+			// remove comments link
+			if ($this->options["comments"]["enabled"] == "off") {
+				$wp_admin_bar->remove_menu('comments');
+			}
+		}
 	}
 	
 	/* Start Settings Page */
