@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Control Freak 
-Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User"s discretion is advised.
+Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a3
+Version: 3.0a4
 */
 
 class ControlFreak {
@@ -14,6 +14,10 @@ class ControlFreak {
 	/* Construct */
 	
 	public function __construct () {
+		// Set Defualt Options if none available
+		if (! get_option("controlfreak")) {
+			add_option("controlfreak",json_encode($this->default_options()),"","yes");
+		}
 		// Get The Latest Options
 		$this->options = json_decode(get_option("controlfreak"),true);
 		// Actions
@@ -36,8 +40,10 @@ class ControlFreak {
 		$this->options = json_decode(get_option("controlfreak"),true);	
 		// Posts
 		if ($this->options["posts"]["enabled"] == "on") {
-			foreach ($this->options["posts"]["supports"] as $support => $value) {
-				if ($value == "off") remove_post_type_support("post",$support);
+			if ($this->options["posts"]["supports"] && count($this->options["posts"]["supports"])) {
+				foreach ($this->options["posts"]["supports"] as $support => $value) {
+					if ($value == "off") remove_post_type_support("post",$support);
+				}
 			}
 			if ($this->options["posts"]["rename"]["name"] && $this->options["posts"]["rename"]["singular_name"]) {
 				$posts_name = $this->options["posts"]["rename"]["name"];
@@ -71,8 +77,10 @@ class ControlFreak {
 		
 		// Pages
 		if ($this->options["pages"]["enabled"] == "on") {
-			foreach ($this->options["pages"]["supports"] as $support => $value) {
-				if ($value == "off") remove_post_type_support("page",$support);
+			if ($this->options["pages"]["supports"] && count($this->options["posts"]["supports"])) {
+				foreach ($this->options["pages"]["supports"] as $support => $value) {
+					if ($value == "off") remove_post_type_support("page",$support);
+				}
 			}
 		} else if ($this->options["pages"]["enabled"] == "off") {
 			unset($wp_post_types["page"]);
@@ -105,6 +113,7 @@ class ControlFreak {
 			remove_action("wp_head", "parent_post_rel_link", 10, 0);
 			remove_action("wp_head", "start_post_rel_link", 10, 0);
 			remove_action("wp_head", "adjacent_posts_rel_link", 10, 0);
+			remove_action("wp_head", "adjacent_posts_rel_link_wp_head", 10, 0);
 		}
 		if ($this->options["frontend"]["remove"]["generator"] == "on") {
 			remove_action("wp_head", "wp_generator");
@@ -114,8 +123,10 @@ class ControlFreak {
 		}
 		
 		// Administraton
-		foreach ($this->options["admin"]["roles"] as $role => $value) {
-			if ($value == "off") remove_role($role);
+		if ($this->options["admin"]["roles"] && count($this->options["admin"]["roles"])) {
+			foreach ($this->options["admin"]["roles"] as $role => $value) {
+				if ($value == "off") remove_role($role);
+			}
 		}
 		if ($this->options["admin"]["advanced"]["disable_adminbar"] == "on") {
 			add_filter("show_admin_bar","__return_false");
@@ -236,7 +247,7 @@ class ControlFreak {
 			if (isset($_POST["controlfreak"]["save"])) { 
 				$new_options = $this->filter_post_options($_POST["controlfreak"]);
 			} else if (isset($_POST["controlfreak"]["revert"])) {
-				$new_options = $this-> default_options();
+				$new_options = $this->default_options();
 			}
 			// save new options
 			if (! get_option("controlfreak")) {
