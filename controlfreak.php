@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a4
+Version: 3.0a5
 */
 
 class ControlFreak {
@@ -120,6 +120,9 @@ class ControlFreak {
 		}
 		if ($this->options["frontend"]["remove"]["l10n"] == "on") {
 			wp_deregister_script("l10n");
+		}
+		if ($this->options["frontend"]["remove"]["adminbar_margin"] == "on") {
+			remove_action("wp_head", "_admin_bar_bump_cb");
 		}
 		
 		// Administraton

@@ -137,7 +137,7 @@
 							<p><b>Menu</b></p>
 						
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"]); ?> Pages before Posts</label></li>
+								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"]); ?> Pages First</label></li>
 								<li><label><?php cf_checkbox(array("admin","menu","hide_plugins"),$options["admin"]["menu"]["hide_plugins"]); ?> Hide Plugins</label></li>
 								<li><label><?php cf_checkbox(array("admin","menu","hide_tools"),$options["admin"]["menu"]["hide_tools"]); ?> Hide Tools</label></li>
 							</ul>
