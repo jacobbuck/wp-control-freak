@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a5
+Version: 3.0a6
 */
 
 class ControlFreak {
@@ -167,6 +167,7 @@ class ControlFreak {
 				$menu[5][0] = $posts_name;
 				$submenu['edit.php'][5][0] = $posts_name;
 				$submenu['edit.php'][10][0] = "Add $posts_singular_name";
+				if (! current_user_can("level_1")) unset($menu[5]);
 			}
 		} else if ($this->options["posts"]["enabled"] == "off") {
 			remove_menu_page("edit.php");
