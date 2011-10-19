@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a6
+Version: 3.0a7
 */
 
 class ControlFreak {
@@ -60,16 +60,20 @@ class ControlFreak {
 				$wp_post_types["post"]->labels->not_found_in_trash = "No ".strtolower($posts_name)." found in Trash";
 				$wp_post_types["post"]->labels->menu_name = $posts_name;
 			}
+			/*
 			if ($this->options["posts"]["taxonomies"]["category"] == "off") {
 				unset($wp_taxonomies["category"]);
 			}
 			if ($this->options["posts"]["taxonomies"]["post_tag"] == "off") {
 				unset($wp_taxonomies["post_tag"]);
 			}
+			*/
 		} else if ($this->options["posts"]["enabled"] == "off") {
 			unset($wp_post_types["post"]);
+			/*
 			unset($wp_taxonomies["category"]);
 			unset($wp_taxonomies["post_tag"]);
+			*/
 		}
 		
 		// Links

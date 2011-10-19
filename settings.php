@@ -51,14 +51,14 @@
 								<li><label><?php cf_checkbox(array("posts","supports","comments"),$options["posts"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
 								<li><label><?php cf_checkbox(array("posts","supports","revisions"),$options["posts"]["supports"]["revisions"]); ?> Revisions</label></li>
 							</ul>
-							
+							<!--
 							<p><b>Taxonomies</b></p>
-						
+							
 							<ul class="fields">
 								<li><label><?php cf_checkbox(array("posts","taxonomies","category"),$options["posts"]["taxonomies"]["category"]); ?> Categories</label></li>
 								<li><label><?php cf_checkbox(array("posts","taxonomies","post_tag"),$options["posts"]["taxonomies"]["post_tag"]); ?> Post Tags</label></li>
 							</ul>
-						
+							-->
 						</div>
 					</div>
 				
