@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a7
+Version: 3.0a8
 */
 
 class ControlFreak {
@@ -16,69 +16,55 @@ class ControlFreak {
 	public function __construct () {
 		// Set Defualt Options if none available
 		if (! get_option("controlfreak")) {
-			add_option("controlfreak",json_encode($this->default_options()),"","yes");
+			add_option("controlfreak", json_encode($this->default_options()), "", "yes");
 		}
 		// Get The Latest Options
-		$this->options = json_decode(get_option("controlfreak"),true);
+		$this->options = json_decode(get_option("controlfreak"), true);
 		// Actions
-		add_action("init", array($this,"init"));
-		add_action("admin_menu", array($this,"admin_menu"));
-		add_action("wp_dashboard_setup", array($this,"wp_dashboard_setup"));
-		add_filter("tiny_mce_before_init",array($this,"tiny_mce_before_init"));
-		add_action("wp_before_admin_bar_render",array($this,"wp_before_admin_bar_render"));
+		add_action("init", array($this, "init"));
+		add_action("admin_menu", array($this, "admin_menu"));
+		add_action("wp_dashboard_setup", array($this, "wp_dashboard_setup"));
+		add_filter("tiny_mce_before_init", array($this, "tiny_mce_before_init"));
+		add_action("wp_before_admin_bar_render", array($this, "wp_before_admin_bar_render"));
 		// Filters
-		add_filter("plugin_action_links", array($this,"add_settings_link"), 10, 2 );
+		add_filter("plugin_action_links", array($this, "add_settings_link"), 10, 2);
+		add_filter("user_has_cap", array($this, "user_has_cap"), 10, 3);		
 	}
 
 	/* Init */
+	
 
 	public function init () {
-		global $wp_post_types, $wp_taxonomies, $wp_roles;
+		global $wp_post_types, $wp_taxonomies, $pagenow;
 		// For Settings Page
 		$this->settings_init();
 		// Get The Latest Options
-		$this->options = json_decode(get_option("controlfreak"),true);	
+		$this->options = json_decode(get_option("controlfreak"), true);	
 		// Posts
 		if ($this->options["posts"]["enabled"] == "on") {
 			if ($this->options["posts"]["supports"] && count($this->options["posts"]["supports"])) {
 				foreach ($this->options["posts"]["supports"] as $support => $value) {
-					if ($value == "off") remove_post_type_support("post",$support);
+					if ($value == "off") remove_post_type_support("post", $support);
 				}
 			}
-			if ($this->options["posts"]["rename"]["name"] && $this->options["posts"]["rename"]["singular_name"]) {
-				$posts_name = $this->options["posts"]["rename"]["name"];
-				$posts_singular_name = $this->options["posts"]["rename"]["singular_name"];
-				$wp_post_types["post"]->labels->name = $posts_name;
-				$wp_post_types["post"]->labels->singular_name = $posts_singular_name;
-				$wp_post_types["post"]->labels->add_new = "Add New";
-				$wp_post_types["post"]->labels->add_new_item = "Add New $posts_singular_name";
-				$wp_post_types["post"]->labels->edit_item = "Edit $posts_singular_name";
-				$wp_post_types["post"]->labels->new_item = "New $posts_singular_name";
-				$wp_post_types["post"]->labels->view_item = "View $posts_singular_name";
-				$wp_post_types["post"]->labels->search_items = "Search $posts_name";
-				$wp_post_types["post"]->labels->not_found = "No ".strtolower($posts_name)." found";
-				$wp_post_types["post"]->labels->not_found_in_trash = "No ".strtolower($posts_name)." found in Trash";
-				$wp_post_types["post"]->labels->menu_name = $posts_name;
-			}
-			/*
 			if ($this->options["posts"]["taxonomies"]["category"] == "off") {
-				unset($wp_taxonomies["category"]);
+				$wp_taxonomies["category"]->public = false;
+				$wp_taxonomies["category"]->show_ui = false;
+				$wp_taxonomies["category"]->show_in_nav_menus = false;
 			}
 			if ($this->options["posts"]["taxonomies"]["post_tag"] == "off") {
-				unset($wp_taxonomies["post_tag"]);
+				$wp_taxonomies["post_tag"]->public = false;
+				$wp_taxonomies["post_tag"]->show_ui = false;
+				$wp_taxonomies["post_tag"]->show_in_nav_menus = false;
 			}
-			*/
 		} else if ($this->options["posts"]["enabled"] == "off") {
-			unset($wp_post_types["post"]);
-			/*
-			unset($wp_taxonomies["category"]);
-			unset($wp_taxonomies["post_tag"]);
-			*/
+			$wp_post_types["post"]->public = false;
+			$wp_post_types["post"]->publicly_queryable = false;
+			$wp_post_types["post"]->show_in_nav_menus = false;
+			$wp_post_types["post"]->show_in_menu = false;
+			$wp_post_types["post"]->show_in_admin_bar = false;
 		}
-		
-		// Links
-		
-		
+				
 		// Pages
 		if ($this->options["pages"]["enabled"] == "on") {
 			if ($this->options["pages"]["supports"] && count($this->options["posts"]["supports"])) {
@@ -87,12 +73,19 @@ class ControlFreak {
 				}
 			}
 		} else if ($this->options["pages"]["enabled"] == "off") {
-			unset($wp_post_types["page"]);
+			$wp_post_types["page"]->public = false;
+			$wp_post_types["page"]->publicly_queryable = false;
+			$wp_post_types["page"]->show_in_nav_menus = false;
+			$wp_post_types["page"]->show_in_menu = false;
+			$wp_post_types["page"]->show_in_admin_bar = false;
 		}
 		
 		// Comments
 		if ($this->options["comments"]["enabled"] == "off") {
 			wp_deregister_script("comment-reply");
+			if ($pagenow == "edit-comments.php") {
+				wp_die(__('You do not have sufficient permissions to access this page.'));
+			}
 		}
 		
 		// Front End
@@ -109,7 +102,7 @@ class ControlFreak {
 			add_action("do_feed_rss2", "disable_our_feeds", 1);
 			add_action("do_feed_atom", "disable_our_feeds", 1);
 			function disable_our_feeds() {
-				wp_die( __("<strong>Error:</strong> No RSS Feed Available, Please visit our <a href=\"". get_bloginfo("url") ."\">homepage</a>.") );
+				wp_die( __("<strong>Error:</strong> No RSS Feed Available, Please visit our <a href=\"". site_url("/") ."\">home page</a>.") );
 			}
 		}
 		if ($this->options["frontend"]["remove"]["postrel"] == "on") {
@@ -130,11 +123,6 @@ class ControlFreak {
 		}
 		
 		// Administraton
-		if ($this->options["admin"]["roles"] && count($this->options["admin"]["roles"])) {
-			foreach ($this->options["admin"]["roles"] as $role => $value) {
-				if ($value == "off") remove_role($role);
-			}
-		}
 		if ($this->options["admin"]["advanced"]["disable_adminbar"] == "on") {
 			add_filter("show_admin_bar","__return_false");
 			wp_deregister_script("admin-bar");
@@ -164,16 +152,7 @@ class ControlFreak {
 		// For Settings Page
 		$this->add_settings_submenu();
 		// Posts
-		if ($this->options["posts"]["enabled"] == "on") {
-			if ($this->options["posts"]["rename"]["name"] && $this->options["posts"]["rename"]["singular_name"]) {
-				$posts_name = $this->options["posts"]["rename"]["name"];
-				$posts_singular_name = $this->options["posts"]["rename"]["singular_name"];
-				$menu[5][0] = $posts_name;
-				$submenu['edit.php'][5][0] = $posts_name;
-				$submenu['edit.php'][10][0] = "Add $posts_singular_name";
-				if (! current_user_can("level_1")) unset($menu[5]);
-			}
-		} else if ($this->options["posts"]["enabled"] == "off") {
+		if ($this->options["posts"]["enabled"] == "off") {
 			remove_menu_page("edit.php");
 		}
 		// Links
@@ -267,8 +246,7 @@ class ControlFreak {
 			if ($new_options["comments"]["enabled"] == "off") {
 				update_option("default_comment_status","closed");	
 			}
-			
-			header("Location: ".get_bloginfo("url")."/wp-admin/options-general.php?page=control-freak&settings-updated=true");
+			wp_redirect(site_url("/wp-admin/options-general.php?page=control-freak&settings-updated=true"));
 		}
 	}
 	
@@ -295,12 +273,29 @@ class ControlFreak {
 		wp_enqueue_style("control_freak_settings");
 	}
 	
+	/* Disallow Capabilities to Disabled */
+	
+	public function user_has_cap ($allcaps, $cap, $args) {
+		if ($this->options["posts"]["enabled"] == "off") {
+			$allcaps["edit_posts"] = false;
+		}
+		if ($this->options["links"]["enabled"] == "off") {
+			$allcaps["manage_links"] = false;
+		}
+		if ($this->options["pages"]["enabled"] == "off") {
+			$allcaps["edit_pages"] = false;
+		}
+		if ($this->options["comments"]["enabled"] == "off") {
+			$allcaps["edit_comment"] = false;
+			$allcaps["moderate_comments"] = false;
+		}
+		return $allcaps;
+	}
+	
 	private function filter_post_options ($posted) {
 		$filtered = array();
 		// posts
 		$filtered["posts"]["enabled"] = ($posted["posts"]["enabled"]) ? "on" : "off";	
-		$filtered["posts"]["rename"]["name"] = ($posted["posts"]["rename"]["name"]) ? $posted["posts"]["rename"]["name"] : "";
-		$filtered["posts"]["rename"]["singular_name"] = ($posted["posts"]["rename"]["singular_name"]) ? $posted["posts"]["rename"]["singular_name"] : "";
 		$filtered["posts"]["supports"]["title"] = ($posted["posts"]["supports"]["title"]) ? "on" : "off";
 		$filtered["posts"]["supports"]["editor"] = ($posted["posts"]["supports"]["editor"]) ? "on" : "off";
 		$filtered["posts"]["supports"]["author"] = ($posted["posts"]["supports"]["author"]) ? "on" : "off";
@@ -344,10 +339,6 @@ class ControlFreak {
 		$filtered["admin"]["menu"]["pages_before"] = ($posted["admin"]["menu"]["pages_before"]) ? "on" : "off";
 		$filtered["admin"]["menu"]["hide_plugins"] = ($posted["admin"]["menu"]["hide_plugins"]) ? "on" : "off";
 		$filtered["admin"]["menu"]["hide_tools"] = ($posted["admin"]["menu"]["hide_tools"]) ? "on" : "off";
-		$filtered["admin"]["roles"]["subscriber"] = ($posted["admin"]["roles"]["subscriber"]) ? "on" : "off";
-		$filtered["admin"]["roles"]["contributor"] = ($posted["admin"]["roles"]["contributor"]) ? "on" : "off";
-		$filtered["admin"]["roles"]["author"] = ($posted["admin"]["roles"]["author"]) ? "on" : "off";
-		$filtered["admin"]["roles"]["editor"] = ($posted["admin"]["roles"]["editor"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["disable_adminbar"] = ($posted["admin"]["advanced"]["disable_adminbar"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["disable_updates"] = ($posted["admin"]["advanced"]["disable_updates"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["tinymce_strictpasting"] = ($posted["admin"]["advanced"]["tinymce_strictpasting"]) ? "on" : "off";
@@ -359,8 +350,6 @@ class ControlFreak {
 		$filtered = array();
 		// posts
 		$filtered["posts"]["enabled"] = "on";	
-		$filtered["posts"]["rename"]["name"] = "";
-		$filtered["posts"]["rename"]["singular_name"] = "";
 		$filtered["posts"]["supports"]["title"] = "on";
 		$filtered["posts"]["supports"]["editor"] = "on";
 		$filtered["posts"]["supports"]["author"] = "on";
@@ -404,10 +393,6 @@ class ControlFreak {
 		$filtered["admin"]["menu"]["pages_before"] = "off";
 		$filtered["admin"]["menu"]["hide_plugins"] = "off";
 		$filtered["admin"]["menu"]["hide_tools"] = "off";
-		$filtered["admin"]["roles"]["subscriber"] = "on";
-		$filtered["admin"]["roles"]["contributor"] = "on";
-		$filtered["admin"]["roles"]["author"] = "on";
-		$filtered["admin"]["roles"]["editor"] = "on";
 		$filtered["admin"]["advanced"]["disable_adminbar"] = "off";
 		$filtered["admin"]["advanced"]["disable_updates"] = "off";
 		$filtered["admin"]["advanced"]["tinymce_strictpasting"] = "off";

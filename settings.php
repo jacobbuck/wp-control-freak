@@ -31,14 +31,7 @@
 					<div class="stuffbox">
 						<h3><label><?php cf_checkbox(array("posts","enabled"),$options["posts"]["enabled"]); ?><span>Posts</span></label></h3>
 						<div class="inside">
-							
-							<p><b>Rename</b></p>
-						
-							<ul class="fields">
-								<li><label><span>Name</span> <?php cf_textbox(array("posts","rename","name"),$options["posts"]["rename"]["name"],"Posts") ?></label></li>
-								<li><label><span>Singular</span> <?php cf_textbox(array("posts","rename","singular_name"),$options["posts"]["rename"]["singular_name"],"Post"); ?></label></li>
-							</ul>
-							
+														
 							<p><b>Supports</b></p>
 						
 							<ul class="fields">
@@ -51,14 +44,12 @@
 								<li><label><?php cf_checkbox(array("posts","supports","comments"),$options["posts"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
 								<li><label><?php cf_checkbox(array("posts","supports","revisions"),$options["posts"]["supports"]["revisions"]); ?> Revisions</label></li>
 							</ul>
-							<!--
 							<p><b>Taxonomies</b></p>
 							
 							<ul class="fields">
 								<li><label><?php cf_checkbox(array("posts","taxonomies","category"),$options["posts"]["taxonomies"]["category"]); ?> Categories</label></li>
 								<li><label><?php cf_checkbox(array("posts","taxonomies","post_tag"),$options["posts"]["taxonomies"]["post_tag"]); ?> Post Tags</label></li>
 							</ul>
-							-->
 						</div>
 					</div>
 				
@@ -137,20 +128,11 @@
 							<p><b>Menu</b></p>
 						
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"]); ?> Pages First</label></li>
+								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"],($options["pages"]["enabled"]!="on")); ?> Pages First</label></li>
 								<li><label><?php cf_checkbox(array("admin","menu","hide_plugins"),$options["admin"]["menu"]["hide_plugins"]); ?> Hide Plugins</label></li>
 								<li><label><?php cf_checkbox(array("admin","menu","hide_tools"),$options["admin"]["menu"]["hide_tools"]); ?> Hide Tools</label></li>
 							</ul>
-						
-							<p><b>Roles</b></p>
-						
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","roles","subscriber"),$options["admin"]["roles"]["subscriber"]); ?> Subscriber</label></li>
-								<li><label><?php cf_checkbox(array("admin","roles","contributor"),$options["admin"]["roles"]["contributor"]); ?> Contributor</label></li>
-								<li><label><?php cf_checkbox(array("admin","roles","author"),$options["admin"]["roles"]["author"]); ?> Author</label></li>
-								<li><label><?php cf_checkbox(array("admin","roles","editor"),$options["admin"]["roles"]["editor"]); ?> Editor</label></li>
-							</ul>
-												
+																			
 							<p><b>Advanced</b></p>
 						
 							<ul class="fields">

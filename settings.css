@@ -15,6 +15,9 @@ input[type="submit"].submitdelete {
 .stuffbox h3 {
 	cursor: default;
 }
+.stuffbox h3 label {
+	vertical-align: initial;
+}
 .stuffbox h3 .checkbox {
 	margin-right: 8px;
 	vertical-align: baseline;
