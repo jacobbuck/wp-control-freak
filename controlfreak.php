@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a8
+Version: 3.0a9
 */
 
 class ControlFreak {
@@ -63,6 +63,12 @@ class ControlFreak {
 			$wp_post_types["post"]->show_in_nav_menus = false;
 			$wp_post_types["post"]->show_in_menu = false;
 			$wp_post_types["post"]->show_in_admin_bar = false;
+			$wp_taxonomies["category"]->public = false;
+			$wp_taxonomies["category"]->show_ui = false;
+			$wp_taxonomies["category"]->show_in_nav_menus = false;
+			$wp_taxonomies["post_tag"]->public = false;
+			$wp_taxonomies["post_tag"]->show_ui = false;
+			$wp_taxonomies["post_tag"]->show_in_nav_menus = false;
 		}
 				
 		// Pages
@@ -276,14 +282,8 @@ class ControlFreak {
 	/* Disallow Capabilities to Disabled */
 	
 	public function user_has_cap ($allcaps, $cap, $args) {
-		if ($this->options["posts"]["enabled"] == "off") {
-			$allcaps["edit_posts"] = false;
-		}
 		if ($this->options["links"]["enabled"] == "off") {
 			$allcaps["manage_links"] = false;
-		}
-		if ($this->options["pages"]["enabled"] == "off") {
-			$allcaps["edit_pages"] = false;
 		}
 		if ($this->options["comments"]["enabled"] == "off") {
 			$allcaps["edit_comment"] = false;
