@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a10
+Version: 3.0a11
 */
 
 class ControlFreak {
@@ -258,23 +258,28 @@ class ControlFreak {
 	private function settings_init () {
 		// register plugin styles
 		wp_register_style("control_freak_settings", WP_PLUGIN_URL . "/wp-control-freak/settings.css");
-		// save settings
-		if (isset($_POST["controlfreak"]["save"]) || isset($_POST["controlfreak"]["revert"])) {
+		// save settings 
+		if (isset($_POST["controlfreak"]["save"]) || isset($_POST["controlfreak"]["revert"]) || isset($_POST["controlfreak"]["import"]["save"])) {
 			// get new options
 			if (isset($_POST["controlfreak"]["save"])) { 
 				$new_options = $this->filter_post_options($_POST["controlfreak"]);
 			} else if (isset($_POST["controlfreak"]["revert"])) {
 				$new_options = $this->default_options();
+			} else if (isset($_POST["controlfreak"]["import"]["save"]) && isset($_POST["controlfreak"]["import"]["data"])) {
+				$new_options = json_decode(stripslashes($_POST["controlfreak"]["import"]["data"]), true);
 			}
-			// save new options
-			if (! get_option("controlfreak")) {
-				add_option("controlfreak",json_encode($new_options),"","yes");
-			} else {
-				update_option("controlfreak",json_encode($new_options));
-			}
-			// update wp options
-			if ($new_options["comments"]["enabled"] == "off") {
-				update_option("default_comment_status","closed");	
+			if (isset($new_options)) {
+				
+				// save new options
+				if (! get_option("controlfreak")) {
+					add_option("controlfreak", json_encode($new_options), "", "yes");
+				} else {
+					update_option("controlfreak", json_encode($new_options));
+				}
+				// update wp options
+				if ($new_options["comments"]["enabled"] == "off") {
+					update_option("default_comment_status","closed");	
+				}
 			}
 			wp_redirect(site_url("/wp-admin/options-general.php?page=control-freak&settings-updated=true"));
 		}
@@ -294,7 +299,8 @@ class ControlFreak {
 	
 	public function settings_page () {
 		// get settings
-		$options = json_decode(get_option("controlfreak"),true);
+		$options_json = get_option("controlfreak");
+		$options = json_decode($options_json, true);
 		// display page
 		include("settings.php");
 	}

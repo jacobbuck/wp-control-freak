@@ -45,3 +45,25 @@ input[type="submit"].submitdelete {
 .stuffbox ul.fields li .textbox {
 	width: 100px;
 }
+.stuffbox.import .inside {
+	padding: 8px 10px 0;
+}
+.stuffbox.import .textarea {
+	width: 255px; height: 90px;
+	resize: none;
+}
+.stuffbox.export .inside {
+	padding: 8px 10px 4px;
+}
+.stuffbox.export .textarea {
+	width: 255px; height: 45px;
+	resize: none;
+}
+#minor-publishing-actions {
+	padding: 4px 10px 8px;
+}
+#importing-action {
+	text-align: right;
+	float: right;
+	line-height: 23px;
+}

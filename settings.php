@@ -24,6 +24,26 @@
 						</div>
 					</div>
 				</div>
+				<div class="stuffbox import">
+					<h3>Import</h3>
+					<div class="submitbox">
+						<div class="inside">
+							<textarea class="textarea" name="controlfreak[import][data]"></textarea>
+						</div>
+						<div id="minor-publishing-actions">
+							<div id="importing-action">
+								<input name="controlfreak[import][save]" type="submit" class="button" value="Import">
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<div class="stuffbox export">
+					<h3>Export</h3>
+					<div class="inside">
+						<textarea class="textarea" readonly><?php echo $options_json; ?></textarea>
+					</div>
+				</div>
 			</div>
 			<div id="post-body">
 				<div id="post-body-content">
@@ -167,10 +187,10 @@
 </div>
 <script>
 jQuery(function($){
-	$("h3 .checkbox:first", ".stuffbox").each(function(){
+	$("h3 .checkbox:first", ".stuffbox").each(function () {
 		var $checkbox = $(this),
 			$stuffbox = $checkbox.closest(".stuffbox"),
-			update_stuffbox = (function(){
+			update_stuffbox = (function () {
 				if ($checkbox.prop("checked")) {
 					$stuffbox.removeClass("disabled");
 				} else {
@@ -179,6 +199,9 @@ jQuery(function($){
 			});
 		update_stuffbox();
 		$checkbox.change(update_stuffbox);
+	});
+	$(".export .textarea:first",".stuffbox").click(function () {
+		$(this).select();
 	});
 });
 </script>
