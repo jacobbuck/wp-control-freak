@@ -4,7 +4,7 @@ Plugin Name: Control Freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.0a9
+Version: 3.0a10
 */
 
 class ControlFreak {
@@ -27,15 +27,18 @@ class ControlFreak {
 		add_filter("tiny_mce_before_init", array($this, "tiny_mce_before_init"));
 		add_action("wp_before_admin_bar_render", array($this, "wp_before_admin_bar_render"));
 		// Filters
+		add_filter("intermediate_image_sizes_advanced", array($this, "intermediate_image_sizes_advanced"));
 		add_filter("plugin_action_links", array($this, "add_settings_link"), 10, 2);
-		add_filter("user_has_cap", array($this, "user_has_cap"), 10, 3);		
+		add_filter("user_has_cap", array($this, "user_has_cap"), 10, 3);
+		add_filter("quick_edit_dropdown_pages_args", array($this, "show_all_in_parent_dropdown"));
+		add_filter("page_attributes_dropdown_pages_args", array($this, "show_all_in_parent_dropdown"));
 	}
-
+	
 	/* Init */
 	
-
 	public function init () {
 		global $wp_post_types, $wp_taxonomies, $pagenow;
+			
 		// For Settings Page
 		$this->settings_init();
 		// Get The Latest Options
@@ -107,7 +110,7 @@ class ControlFreak {
 			add_action("do_feed_rss", "disable_our_feeds", 1);
 			add_action("do_feed_rss2", "disable_our_feeds", 1);
 			add_action("do_feed_atom", "disable_our_feeds", 1);
-			function disable_our_feeds() {
+			function disable_our_feeds () {
 				wp_die( __("<strong>Error:</strong> No RSS Feed Available, Please visit our <a href=\"". site_url("/") ."\">home page</a>.") );
 			}
 		}
@@ -229,6 +232,27 @@ class ControlFreak {
 		}
 	}
 	
+	/* Image Sizes */
+	
+	function intermediate_image_sizes_advanced ($sizes) {
+		if ($this->options["media"]["crop"]["medium"] == "on") {
+			$sizes["medium"]["crop"] = true;
+		}
+		if ($this->options["media"]["crop"]["large"] == "on") {
+			$sizes["large"]["crop"] = true;
+		}
+		return $sizes;
+	}
+	
+	/* Parent Dropdown List */
+	
+	function show_all_in_parent_dropdown ($args) {
+		if ($this->options["admin"]["advanced"]["parent_dropdown_all"]) {
+			$args["post_status"] = array("publish", "draft", "pending", "private");
+		}
+		return $args;
+	}
+	
 	/* Start Settings Page */
 	
 	private function settings_init () {
@@ -327,6 +351,9 @@ class ControlFreak {
 		$filtered["frontend"]["remove"]["generator"] = ($posted["frontend"]["remove"]["generator"]) ? "on" : "off";
 		$filtered["frontend"]["remove"]["l10n"] = ($posted["frontend"]["remove"]["l10n"]) ? "on" : "off";
 		$filtered["frontend"]["remove"]["adminbar_margin"] = ($posted["frontend"]["remove"]["adminbar_margin"]) ? "on" : "off";
+		// media
+		$filtered["media"]["crop"]["medium"] = ($posted["media"]["crop"]["medium"]) ? "on" : "off";
+		$filtered["media"]["crop"]["large"] = ($posted["media"]["crop"]["large"]) ? "on" : "off";
 		// admin
 		$filtered["admin"]["dashboard"]["right_now"] = ($posted["admin"]["dashboard"]["right_now"]) ? "on" : "off";
 		$filtered["admin"]["dashboard"]["recent_comments"] = ($posted["admin"]["dashboard"]["recent_comments"] && $posted["comments"]["enabled"]) ? "on" : "off";
@@ -341,6 +368,7 @@ class ControlFreak {
 		$filtered["admin"]["menu"]["hide_tools"] = ($posted["admin"]["menu"]["hide_tools"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["disable_adminbar"] = ($posted["admin"]["advanced"]["disable_adminbar"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["disable_updates"] = ($posted["admin"]["advanced"]["disable_updates"]) ? "on" : "off";
+		$filtered["admin"]["advanced"]["parent_dropdown_all"] = ($posted["admin"]["advanced"]["parent_dropdown_all"]) ? "on" : "off";
 		$filtered["admin"]["advanced"]["tinymce_strictpasting"] = ($posted["admin"]["advanced"]["tinymce_strictpasting"]) ? "on" : "off";
 		// return filtered
 		return $filtered;
@@ -381,6 +409,9 @@ class ControlFreak {
 		$filtered["frontend"]["remove"]["generator"] = "off";
 		$filtered["frontend"]["remove"]["l10n"] = "off";
 		$filtered["frontend"]["remove"]["adminbar_margin"] = "off";
+		// media
+		$filtered["media"]["crop"]["medium"] = "off";
+		$filtered["media"]["crop"]["large"] = "off";
 		// admin
 		$filtered["admin"]["dashboard"]["right_now"] = "on";
 		$filtered["admin"]["dashboard"]["recent_comments"] = "on";
@@ -395,6 +426,7 @@ class ControlFreak {
 		$filtered["admin"]["menu"]["hide_tools"] = "off";
 		$filtered["admin"]["advanced"]["disable_adminbar"] = "off";
 		$filtered["admin"]["advanced"]["disable_updates"] = "off";
+		$filtered["admin"]["advanced"]["parent_dropdown_all"] = "off";
 		$filtered["admin"]["advanced"]["tinymce_strictpasting"] = "off";
 		// return filtered
 		return $filtered;

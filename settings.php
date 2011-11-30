@@ -107,6 +107,20 @@
 							
 						</div>
 					</div>
+					
+					<div class="stuffbox">
+						<h3><span>Media</span></h3>
+						<div class="inside">
+						
+							<p><b>Image Cropping</b></p>
+						
+							<ul class="fields">
+								<li><label><?php cf_checkbox(array("media","crop","medium"),$options["media"]["crop"]["medium"]); ?> Medium</label></li>
+								<li><label><?php cf_checkbox(array("media","crop","large"),$options["media"]["crop"]["large"]); ?> Large</label></li>
+							</ul>
+														
+						</div>
+					</div>
 									
 					<div class="stuffbox">
 						<h3><span>Administraton</span></h3>
@@ -138,7 +152,8 @@
 							<ul class="fields">
 								<li><label><?php cf_checkbox(array("admin","advanced","disable_adminbar"),$options["admin"]["advanced"]["disable_adminbar"]); ?> Disable Admin Bar</label></li>
 								<li><label><?php cf_checkbox(array("admin","advanced","disable_updates"),$options["admin"]["advanced"]["disable_updates"]); ?> Disable Update Checks</label></li>
-								<li><label><?php cf_checkbox(array("admin","advanced","tinymce_strictpasting"),$options["admin"]["advanced"]["tinymce_strictpasting"]); ?> Strict TinyMCE Pasting</label></li>
+								<li><label><?php cf_checkbox(array("admin","advanced","parent_dropdown_all"),$options["admin"]["advanced"]["parent_dropdown_all"]); ?> Parent Select All Posts</label></li>	
+								<li><label><?php cf_checkbox(array("admin","advanced","tinymce_strictpasting"),$options["admin"]["advanced"]["tinymce_strictpasting"]); ?> Strict TinyMCE Pasting</label></li>							
 							</ul>
 												
 						</div>
@@ -151,8 +166,8 @@
 		
 </div>
 <script>
-(function($){
-	$("h3 .checkbox", ".stuffbox").each(function(){
+jQuery(function($){
+	$("h3 .checkbox:first", ".stuffbox").each(function(){
 		var $checkbox = $(this),
 			$stuffbox = $checkbox.closest(".stuffbox"),
 			update_stuffbox = (function(){
@@ -165,7 +180,7 @@
 		update_stuffbox();
 		$checkbox.change(update_stuffbox);
 	});
-})(this.jQuery);
+});
 </script>
 <?php
 
