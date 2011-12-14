@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Control Freak 
+Plugin URI: https://github.com/jacobbuck/wp-control-freak
 Description: This handy little plugin hacks some of the core features and settings in WordPress to make it more suitable for your needs. User's discretion is advised.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
