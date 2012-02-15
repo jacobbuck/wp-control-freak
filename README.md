@@ -1,6 +1,6 @@
 # Control Freak #
 
-A handy little plugin which tweeks some of the core features and settings in WordPress to make it more suitable for your needs.
+A handy little plugin which tweaks some of the core features and settings in WordPress to make it more suitable for your needs.
 
 ## Features ##
 
@@ -12,3 +12,6 @@ A handy little plugin which tweeks some of the core features and settings in Wor
 - Disable update checking
 - Show non-public pages in parent selector
 - And more...
+
+
+Download from Wordpress.org: http://wordpress.org/extend/plugins/control-freak/
