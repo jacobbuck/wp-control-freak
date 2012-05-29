@@ -15,7 +15,6 @@ class ControlFreak {
 	private $default_supports;  // Default post supports
 	private $default_dashboard; // Default dashboard widgets
 	private $default_widgets;   // Default widgets
-	private $notices = array();
 	public $version = 3.1;
 	
 	/* Construct */
