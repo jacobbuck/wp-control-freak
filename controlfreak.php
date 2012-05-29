@@ -5,16 +5,49 @@ Plugin URI: https://github.com/jacobbuck/wp-control-freak
 Description: A handy little plugin which tweaks some of the core features and settings in WordPress to make it more suitable for your needs.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.1 alpha 3
+Version: 3.1 alpha 4
 */
 
 class ControlFreak {
 		
 	private $backup_vars;       // Keep a backup of pre-modified global vars
 	private $options;
-	private $default_supports;  // Default post supports
-	private $default_dashboard; // Default dashboard widgets
-	private $default_widgets;   // Default widgets
+	private $default_supports = array(
+		"title" => "Title",
+		"editor" => "Editor",
+		"author" => "Author",
+		"excerpt" => "Excerpt",
+		"trackbacks" => "Trackbacks",
+		"custom-fields" => "Custom Fields",
+		"comments" => "Comments",
+		"revisions" => "Revisions",
+		"page-attributes" => "Page Attributes"
+	);
+	private $default_dashboard = array(
+		"right_now" => "Right Now", 
+		"recent_comments" => "Recent Comments", 
+		"incoming_links" => "Incoming Links", 
+		"plugins" => "Plugins", 
+		"quick_press" => "QuickPress", 
+		"recent_drafts" => "Recent Drafts", 
+		"primary" => "WordPress Blog", 
+		"secondary" => "Other WordPress News"
+	);
+	private $default_widgets = array(
+		"WP_Widget_Pages" => "Pages", 
+		"WP_Widget_Calendar" => "Calendar", 
+		"WP_Widget_Archives" => "Archives", 
+		"WP_Widget_Links" => "Links", 
+		"WP_Widget_Meta" => "Meta", 
+		"WP_Widget_Search" => "Search", 
+		"WP_Widget_Text" => "Text", 
+		"WP_Widget_Categories" => "Categories", 
+		"WP_Widget_Recent_Posts" => "Recent Posts", 
+		"WP_Widget_Recent_Comments" => "Recent Comments", 
+		"WP_Widget_RSS" => "RSS", 
+		"WP_Widget_Tag_Cloud" => "Tag Cloud", 
+		"WP_Nav_Menu_Widget" => "Custom Menu"
+	);
 	public $version = 3.1;
 	
 	/* Construct */
@@ -22,43 +55,6 @@ class ControlFreak {
 	public function __construct () {
 		// Activate
 		$this->activate();
-		// Store defaults
-		$this->default_supports = array(
-			"title" => "Title",
-			"editor" => "Editor",
-			"author" => "Author",
-			"excerpt" => "Excerpt",
-			"trackbacks" => "Trackbacks",
-			"custom-fields" => "Custom Fields",
-			"comments" => "Comments",
-			"revisions" => "Revisions",
-			"page-attributes" => "Page Attributes"
-		);
-		$this->default_dashboard = array(
-			"right_now" => "Right Now", 
-			"recent_comments" => "Recent Comments", 
-			"incoming_links" => "Incoming Links", 
-			"plugins" => "Plugins", 
-			"quick_press" => "QuickPress", 
-			"recent_drafts" => "Recent Drafts", 
-			"primary" => "WordPress Blog", 
-			"secondary" => "Other WordPress News"
-		);
-		$this->default_widgets = array(
-			"WP_Widget_Pages" => "Pages", 
-			"WP_Widget_Calendar" => "Calendar", 
-			"WP_Widget_Archives" => "Archives", 
-			"WP_Widget_Links" => "Links", 
-			"WP_Widget_Meta" => "Meta", 
-			"WP_Widget_Search" => "Search", 
-			"WP_Widget_Text" => "Text", 
-			"WP_Widget_Categories" => "Categories", 
-			"WP_Widget_Recent_Posts" => "Recent Posts", 
-			"WP_Widget_Recent_Comments" => "Recent Comments", 
-			"WP_Widget_RSS" => "RSS", 
-			"WP_Widget_Tag_Cloud" => "Tag Cloud", 
-			"WP_Nav_Menu_Widget" => "Custom Menu"
-		);		
 		// Actions
 		add_action("init", array($this, "init"));
 		add_action("admin_menu", array($this, "admin_menu"));
