@@ -5,7 +5,7 @@ Plugin URI: https://github.com/jacobbuck/wp-control-freak
 Description: A handy little plugin which tweaks some of the core features and settings in WordPress to make it more suitable for your needs.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.1 alpha 1
+Version: 3.1 alpha 2
 */
 
 class ControlFreak {
@@ -58,7 +58,7 @@ class ControlFreak {
 			"WP_Nav_Menu_Widget" => "Custom Menu"
 		);		
 		// Get The Latest Options
-		$this->options = json_decode(get_option("controlfreak"), true);
+		$this->options = get_option("controlfreak");
 		// Actions
 		add_action("init", array($this, "init"));
 		add_action("admin_menu", array($this, "admin_menu"));
@@ -78,6 +78,8 @@ class ControlFreak {
 	
 	public function init () {
 		global $wp_post_types, $wp_taxonomies, $pagenow;
+		// Get The Latest Options
+		$this->options = get_option("controlfreak");
 		// Backup $wp_post_types and $wp_taxonomies
 		$this->backup_vars["wp_post_types"] = $wp_post_types;
 		$this->backup_vars["wp_taxonomies"] = $wp_taxonomies;
@@ -112,10 +114,6 @@ class ControlFreak {
 			unset($this->default_dashboard["recent_comments"]);
 			unset($this->default_widgets["WP_Widget_Recent_Comments"]);
 		}
-		// For Settings Page
-		$this->settings_init();
-		// Get The Latest Options
-		$this->options = json_decode(get_option("controlfreak"), true);	
 		// Posts Types
 		foreach (array("post", "page") as $post_type) {
 			if ($this->options["post_types"][$post_type]["enabled"] == "on") {
@@ -217,7 +215,8 @@ class ControlFreak {
 			remove_action("load-update-core.php", "wp_update_plugins");
 			add_filter("pre_site_transient_update_plugins", create_function('$a', "return null;"));
 		}
-		
+		// Settings Page Init
+		$this->settings_init();
 	}
 	
 	/* Disable DSS Feeds */
@@ -286,7 +285,7 @@ class ControlFreak {
 	
 	/* Admin Bar */	
 	
-	function wp_before_admin_bar_render () {
+	public function wp_before_admin_bar_render () {
 		global $wp_admin_bar;
 		// Backup $wp_admin_bar
 		$this->backup_vars["wp_admin_bar"] = $wp_admin_bar;
@@ -298,7 +297,7 @@ class ControlFreak {
 	
 	/* Widgets */
 	
-	function widgets_init () {
+	public function widgets_init () {
 		foreach ($this->default_widgets as $widget_name => $widget_title) {
 			if (! in_array($widget_name, $this->options["admin"]["widgets_remove"]))
 				unregister_widget($widget_name);
@@ -323,7 +322,7 @@ class ControlFreak {
 	
 	/* Image Sizes */
 	
-	function intermediate_image_sizes_advanced ($sizes) {
+	public function intermediate_image_sizes_advanced ($sizes) {
 		foreach ($this->options["media"]["crop"] as $size) {
 			if (isset($sizes[$size]))
 				$sizes[$size]["crop"] = true;
@@ -333,7 +332,7 @@ class ControlFreak {
 	
 	/* Parent Dropdown List */
 	
-	function show_all_in_parent_dropdown ($args) {
+	public function show_all_in_parent_dropdown ($args) {
 		if ($this->options["admin"]["advanced"]["parent_dropdown_fix"]) {
 			$args["post_status"] = array("publish", "pending", "draft", "private");
 		}
@@ -342,15 +341,12 @@ class ControlFreak {
 	
 	/* Plugin Activation */
 	
-	function activate () {
+	public function activate () {
 		$options = get_option("controlfreak");
-		if ($options) {
-			$options = json_decode($options, true);
-			if (empty($options->version))
-				update_option("controlfreak", json_encode($this->filter_options(true)));
-		} else {
+		if (empty($options) && ! is_array($options)) {
 			// Set defualt options
-			add_option("controlfreak", json_encode($this->filter_options(true)), false, "yes");
+			delete_option("controlfreak");
+			add_option("controlfreak", $this->filter_options(true));	
 		}
 	}
 	
@@ -374,7 +370,7 @@ class ControlFreak {
 			}
 			if (isset($new_options)) {
 				// store new options
-				update_option("controlfreak", json_encode($new_options));
+				update_option("controlfreak", $new_options);
 				// update wp options
 				if ($new_options["comments"]["enabled"] == "off") {
 					update_option("default_comment_status", "closed");	
@@ -400,9 +396,8 @@ class ControlFreak {
 	}
 	
 	public function settings_page () {
-		// get settings
-		$options_json = get_option("controlfreak");
-		$options = json_decode($options_json, true);
+		global $wp_post_types; 
+		$options = $this->options;
 		// display page
 		include("settings.php");
 	}
@@ -490,7 +485,7 @@ class ControlFreak {
 		return $filtered;
 	}
 	
-	function notice_settings_changed () {
+	public function notice_settings_changed () {
 		echo "<div class=\"updated settings-error\" id=\setting-error-settings_updated\"><p><strong>".__("Settings Changed")."</strong></p></div>";
 	}
 	
@@ -501,4 +496,3 @@ class ControlFreak {
 $controlfreak = new ControlFreak;
 
 register_activation_hook(__FILE__, array($controlfreak, "activate"));
-// register_deactivation_hook(__FILE__, array($wpnbh, "deactivate"));

@@ -1,5 +1,3 @@
-<?php global $wp_post_types; ?>
-
 <div class="wrap">
 	
 	<div class="icon32" id="icon-options-general"><br></div><h2><?php _e("Control Freak Settings"); ?></h2>
@@ -38,7 +36,7 @@
 				<div class="stuffbox export">
 					<h3><?php _e("Export"); ?></h3>
 					<div class="inside">
-						<textarea class="textarea" onclick="this.focus();this.select();return false" readonly="readonly"><?php echo $options_json; ?></textarea>
+						<textarea class="textarea" onclick="this.focus();this.select();return false" readonly="readonly"><?php echo json_encode($options); ?></textarea>
 					</div>
 				</div>
 			</div>
