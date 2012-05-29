@@ -5,7 +5,7 @@ Plugin URI: https://github.com/jacobbuck/wp-control-freak
 Description: A handy little plugin which tweaks some of the core features and settings in WordPress to make it more suitable for your needs.
 Author: Jacob Buck
 Author URI: http://jacobbuck.co.nz/
-Version: 3.1 alpha 2
+Version: 3.1 alpha 3
 */
 
 class ControlFreak {
@@ -20,6 +20,8 @@ class ControlFreak {
 	/* Construct */
 	
 	public function __construct () {
+		// Activate
+		$this->activate();
 		// Store defaults
 		$this->default_supports = array(
 			"title" => "Title",
@@ -37,7 +39,7 @@ class ControlFreak {
 			"recent_comments" => "Recent Comments", 
 			"incoming_links" => "Incoming Links", 
 			"plugins" => "Plugins", 
-			"quickpress" => "QuickPress", 
+			"quick_press" => "QuickPress", 
 			"recent_drafts" => "Recent Drafts", 
 			"primary" => "WordPress Blog", 
 			"secondary" => "Other WordPress News"
@@ -57,8 +59,6 @@ class ControlFreak {
 			"WP_Widget_Tag_Cloud" => "Tag Cloud", 
 			"WP_Nav_Menu_Widget" => "Custom Menu"
 		);		
-		// Get The Latest Options
-		$this->options = get_option("controlfreak");
 		// Actions
 		add_action("init", array($this, "init"));
 		add_action("admin_menu", array($this, "admin_menu"));
@@ -92,7 +92,7 @@ class ControlFreak {
 		}
 		// Remove defaults on posts disable
 		if ($this->options["post_types"]["post"]["enabled"] == "off") {
-			unset($this->default_dashboard["quickpress"]);
+			unset($this->default_dashboard["quick_press"]);
 			unset($this->default_widgets["WP_Widget_Archives"]);
 			unset($this->default_widgets["WP_Widget_Recent_Posts"]);
 		}
@@ -259,12 +259,12 @@ class ControlFreak {
 			if (! in_array($name, $this->options["admin"]["dashboard_remove"]))
 				unset($wp_meta_boxes["dashboard"]["normal"]["core"]["dashboard_$name"]);
 		}
-		foreach (array("quickpress", "recent_drafts", "primary", "secondary") as $name) {
+		foreach (array("quick_press", "recent_drafts", "primary", "secondary") as $name) {
 			if (! in_array($name, $this->options["admin"]["dashboard_remove"]))
 				unset($wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_$name"]);
 		}
 		if ($this->options["post_types"]["post"]["enabled"] == "off") {
-			unset($wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_quickpress"]);
+			unset($wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_quick_press"]);
 		}
 		if ($this->options["comments"]["enabled"] == "off") { 
 			unset($wp_meta_boxes["dashboard"]["normal"]["core"]["dashboard_recent_comments"]);
@@ -342,11 +342,13 @@ class ControlFreak {
 	/* Plugin Activation */
 	
 	public function activate () {
-		$options = get_option("controlfreak");
-		if (empty($options) && ! is_array($options)) {
+		$this->options = get_option("controlfreak");
+		if (empty($this->options) || ! is_array($this->options)) {
+			// Get default options
+			$this->options = $this->filter_options(true);
 			// Set defualt options
 			delete_option("controlfreak");
-			add_option("controlfreak", $this->filter_options(true));	
+			add_option("controlfreak", $this->options);
 		}
 	}
 	
