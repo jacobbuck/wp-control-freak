@@ -1,179 +1,244 @@
+<?php global $wp_post_types; ?>
+
 <div class="wrap">
 	
-	<div class="icon32" id="icon-options-general"><br></div><h2>Control Freak Settings</h2>
-	
-	<?php if (isset($_GET["settings-updated"]) && $_GET["settings-updated"] === "true") : ?>
-	<div class="updated settings-error" id="setting-error-settings_updated"> 
-	<p><strong>Settings saved.</strong></p></div>
-	<?php endif; ?>
-	
+	<div class="icon32" id="icon-options-general"><br></div><h2><?php _e("Control Freak Settings"); ?></h2>
+		
 	<form action="" method="post" accept-charset="utf-8">
 		<div class="metabox-holder has-right-sidebar">
 			<div class="inner-sidebar">
 				<div class="stuffbox">
-					<h3>Settings</h3>
+					<h3><?php _e("Settings"); ?></h3>
 					<div class="submitbox">
 						<div id="major-publishing-actions">
 							<div id="delete-action">
-								<input name="controlfreak[revert]" type="submit" class="submitdelete deletion" value="Revert to defaults">
+								<input name="controlfreak[revert]" type="submit" class="submitdelete deletion" value="<?php _e("Revert to defaults"); ?>">
 							</div>
 							<div id="publishing-action">
-								<input name="controlfreak[save]" type="submit" class="button-primary" value="Save Changes">
+								<input name="controlfreak[save]" type="submit" class="button-primary" value="<?php _e("Save Changes"); ?>">
 							</div>
 							<div class="clear"></div>
 						</div>
 					</div>
 				</div>
 				<div class="stuffbox import">
-					<h3>Import</h3>
+					<h3><?php _e("Import"); ?></h3>
 					<div class="submitbox">
 						<div class="inside">
 							<textarea class="textarea" name="controlfreak[import][data]"></textarea>
 						</div>
 						<div id="minor-publishing-actions">
 							<div id="importing-action">
-								<input name="controlfreak[import][save]" type="submit" class="button" value="Import">
+								<input name="controlfreak[import][save]" type="submit" class="button" value="<?php _e("Import"); ?>">
 							</div>
 							<div class="clear"></div>
 						</div>
 					</div>
 				</div>
 				<div class="stuffbox export">
-					<h3>Export</h3>
+					<h3><?php _e("Export"); ?></h3>
 					<div class="inside">
-						<textarea class="textarea" readonly><?php echo $options_json; ?></textarea>
+						<textarea class="textarea" onclick="this.focus();this.select();return false" readonly="readonly"><?php echo $options_json; ?></textarea>
 					</div>
 				</div>
 			</div>
 			<div id="post-body">
-				<div id="post-body-content">
-				
-					<div class="stuffbox">
-						<h3><label><?php cf_checkbox(array("posts","enabled"),$options["posts"]["enabled"]); ?><span>Posts</span></label></h3>
+				<div id="post-body-content">					
+					
+					<div class="stuffbox <?php echo $options["post_types"]["post"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-post"><br></div><?php _e("Posts"); ?></h3>
 						<div class="inside">
-														
-							<p><b>Supports</b></p>
-						
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("posts","supports","title"),$options["posts"]["supports"]["title"]); ?> Title</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","editor"),$options["posts"]["supports"]["editor"]); ?> Editor</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","author"),$options["posts"]["supports"]["author"]); ?> Author</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","excerpt"),$options["posts"]["supports"]["excerpt"]); ?> Excerpt</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","trackbacks"),$options["posts"]["supports"]["trackbacks"]); ?> Trackbacks</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","custom-fields"),$options["posts"]["supports"]["custom-fields"]); ?> Custom Fields</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","comments"),$options["posts"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
-								<li><label><?php cf_checkbox(array("posts","supports","revisions"),$options["posts"]["supports"]["revisions"]); ?> Revisions</label></li>
-							</ul>
-							<p><b>Taxonomies</b></p>
 							
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("posts","taxonomies","category"),$options["posts"]["taxonomies"]["category"]); ?> Categories</label></li>
-								<li><label><?php cf_checkbox(array("posts","taxonomies","post_tag"),$options["posts"]["taxonomies"]["post_tag"]); ?> Post Tags</label></li>
-							</ul>
-						</div>
-					</div>
-				
-					<div class="stuffbox">
-						<h3><label><?php cf_checkbox(array("links","enabled"),$options["links"]["enabled"]); ?><span>Links</span></label></h3>
-						<div class="inside">
-						</div>
-					</div>
-				
-					<div class="stuffbox">
-						<h3><label><?php cf_checkbox(array("pages","enabled"),$options["pages"]["enabled"]); ?><span>Pages</span></label></h3>
-						<div class="inside">
-						
-							<p><b>Supports</b></p>
-						
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("pages","supports","title"),$options["pages"]["supports"]["title"]); ?> Title</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","editor"),$options["pages"]["supports"]["editor"]); ?> Editor</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","author"),$options["pages"]["supports"]["author"]); ?> Author</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","excerpt"),$options["pages"]["supports"]["excerpt"]); ?> Excerpt</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","trackbacks"),$options["pages"]["supports"]["trackbacks"]); ?> Trackbacks</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","custom-fields"),$options["pages"]["supports"]["custom-fields"]); ?> Custom Fields</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","comments"),$options["pages"]["supports"]["comments"],($options["comments"]["enabled"]!="on")); ?> Comments</label></li>
-								<li><label><?php cf_checkbox(array("pages","supports","revisions"),$options["pages"]["supports"]["revisions"]); ?> Revisions</label></li>
-							</ul>
-						
-						</div>
-					</div>
-				
-					<div class="stuffbox">
-						<h3><label><?php cf_checkbox(array("comments","enabled"),$options["comments"]["enabled"]); ?><span>Comments</span></label></h3>
-						<div class="inside">
-						</div>
-					</div>
-				
-					<div class="stuffbox">
-						<h3><span>Front End</span></h3>
-						<div class="inside">
-						
-							<p><b>Remove Meta Tags</b></p>
-						
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("frontend","remove","remotepub"),$options["frontend"]["remove"]["remotepub"]); ?> Remote Publishing</label></li>
-								<li><label><?php cf_checkbox(array("frontend","remove","rssfeeds"),$options["frontend"]["remove"]["rssfeeds"]); ?> RSS Feeds</label></li>
-								<li><label><?php cf_checkbox(array("frontend","remove","postrel"),$options["frontend"]["remove"]["postrel"]); ?> Posts Rel Links</label></li>
-								<li><label><?php cf_checkbox(array("frontend","remove","generator"),$options["frontend"]["remove"]["generator"]); ?> Generator</label></li>
-							</ul>
+							<p class="field"><label><?php cf_checkbox("post_types|post|enabled", $options["post_types"]["post"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
 							
-							<p><b>Remove Scripts &amp; Styles</b></p>
-						
-							<ul class="fields">
-								<li><label><?php cf_checkbox(array("frontend","remove","l10n"),$options["frontend"]["remove"]["l10n"]); ?> Localization (l10n)</label></li>
-								<li><label><?php cf_checkbox(array("frontend","remove","adminbar_margin"),$options["frontend"]["remove"]["adminbar_margin"]); ?> Admin Bar Margin</label></li>
-							</ul>
+							<div class="hide-on-disabled">
+							
+								<p><b><?php _e("Privacy"); ?></b></p>
+								
+								<ul class="fields">
+									<li><label><?php cf_checkbox("post_types|post|public", $options["post_types"]["post"]["public"] == "on"); _e("Public"); ?></label></li>
+									<li><label><?php cf_checkbox("post_types|post|show_in_nav_menus", $options["post_types"]["post"]["show_in_nav_menus"] == "on"); _e("Show in Menu Editor"); ?></label></li>
+									<li><label><?php cf_checkbox("post_types|post|show_in_search", $options["post_types"]["post"]["show_in_search"] == "on"); _e("Show in Search Results"); ?></label></li>
+								</ul>
+								
+								<p><b><?php _e("Supports"); ?></b></p>
+								
+								<ul class="fields">
+									<?php foreach ($this->default_supports as $name => $title) { ?>
+										<li><label><?php cf_checkbox("post_types|post|supports|", post_type_supports("post", $name), $name); ?> <?php echo $title; ?></label></li>
+									<?php } ?>
+								</ul>
+							
+							</div>
+							
+						</div>
+					</div>
+									
+					<div class="stuffbox <?php echo $options["post_types"]["page"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-page"><br></div><?php _e("Pages"); ?></h3>
+						<div class="inside">
+							
+							<p class="field"><label><?php cf_checkbox("post_types|page|enabled", $options["post_types"]["page"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
+							
+							<div class="hide-on-disabled">
+							
+								<p><b><?php _e("Privacy"); ?></b></p>
+								
+								<ul class="fields">
+									<li><label><?php cf_checkbox("post_types|page|public", $options["post_types"]["page"]["public"] == "on"); _e("Public"); ?></label></li>
+									<li><label><?php cf_checkbox("post_types|page|show_in_nav_menus", $options["post_types"]["page"]["show_in_nav_menus"] == "on"); _e("Show in Menu Editor"); ?></label></li>
+									<li><label><?php cf_checkbox("post_types|page|show_in_search", $options["post_types"]["page"]["show_in_search"] == "on"); _e("Show in Search Results"); ?></label></li>
+								</ul>
+								
+								<p><b><?php _e("Supports"); ?></b></p>
+								
+								<ul class="fields">
+									<?php foreach ($this->default_supports as $name => $title) { ?>
+										<li><label><?php cf_checkbox("post_types|page|supports|$name", post_type_supports("page", $name), $name); ?> <?php _e($title); ?></label></li>
+									<?php } ?>
+								</ul>
+							
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="stuffbox <?php echo $options["taxonomies"]["category"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-post"><br></div><?php _e("Categories"); ?></h3>
+						<div class="inside">
+							
+							<p class="field"><label><?php cf_checkbox("taxonomies|category|enabled", $options["taxonomies"]["category"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
+							
+							<div class="hide-on-disabled">
+							
+								<p><b><?php _e("Post Types"); ?></b></p>
+								
+								<ul class="fields">
+									<?php foreach ($wp_post_types as $type_key => $type_obj) { if ($type_key == "post" || $type_key == "page" || ! $type_obj->_builtin) { ?>
+									<li><label><?php cf_checkbox("taxonomies|category|post_types|", in_array($type_key, $options["taxonomies"]["category"]["post_types"]), $type_key); _e($type_obj->label); ?></label></li>
+									<?php } } ?>
+								</ul>
+								
+								<p><b><?php _e("Privacy"); ?></b></p>
+								
+								<ul class="fields">
+									<li><label><?php cf_checkbox("taxonomies|category|public", $options["taxonomies"]["category"]["public"] == "on"); _e("Public"); ?></label></li>
+									<li><label><?php cf_checkbox("taxonomies|category|show_in_nav_menus", $options["taxonomies"]["category"]["show_in_nav_menus"] == "on"); _e("Show in Menu Editor"); ?></label></li>
+								</ul>
+							
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="stuffbox <?php echo $options["taxonomies"]["post_tag"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-post"><br></div><?php _e("Post Tags"); ?></h3>
+						<div class="inside">
+							
+							<p class="field"><label><?php cf_checkbox("taxonomies|post_tag|enabled", $options["taxonomies"]["post_tag"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
+							
+							<div class="hide-on-disabled">
+							
+								<p><b><?php _e("Post Types"); ?></b></p>
+								
+								<ul class="fields">
+									<?php foreach ($wp_post_types as $type_key => $type_obj) { if ($type_key == "post" || $type_key == "page" || ! $type_obj->_builtin) { ?>
+									<li><label><?php cf_checkbox("taxonomies|post_tag|post_types|", in_array($type_key, $options["taxonomies"]["post_tag"]["post_types"]), $type_key); _e($type_obj->label); ?></label></li>
+									<?php } } ?>
+								</ul>
+								
+								<p><b><?php _e("Privacy"); ?></b></p>
+								
+								<ul class="fields">
+									<li><label><?php cf_checkbox("taxonomies|post_tag|public", $options["taxonomies"]["post_tag"]["public"] == "on"); _e("Public"); ?></label></li>
+									<li><label><?php cf_checkbox("taxonomies|post_tag|show_in_nav_menus", $options["taxonomies"]["post_tag"]["show_in_nav_menus"] == "on"); _e("Show in Menu Editor"); ?></label></li>
+								</ul>
+							
+							</div>
 							
 						</div>
 					</div>
 					
 					<div class="stuffbox">
-						<h3><span>Media</span></h3>
+						<h3><div class="icon16 icon-media"><br></div><?php _e("Media"); ?></h3>
 						<div class="inside">
 						
-							<p><b>Image Cropping</b></p>
+							<p><b><?php _e("Force Image Cropping"); ?></b></p>
 						
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("media","crop","medium"),$options["media"]["crop"]["medium"]); ?> Medium</label></li>
-								<li><label><?php cf_checkbox(array("media","crop","large"),$options["media"]["crop"]["large"]); ?> Large</label></li>
+								<li><label><?php cf_checkbox("media|crop|", in_array("medium", $options["media"]["crop"]), "medium"); _e("Medium"); ?></label></li>
+								<li><label><?php cf_checkbox("media|crop|", in_array("large", $options["media"]["crop"]), "large"); _e("Large"); ?></label></li>
 							</ul>
-														
+							
+							<?php if ($this->options["comments"]["enabled"] == "on") { ?>
+							
+								<p><b><?php _e("Supports"); ?></b></p>
+								
+								<ul class="fields">
+									<li><label><?php cf_checkbox("media|supports|", $options["media"]["supports"], "comments"); _e("Comments"); ?></label></li>
+								</ul>
+								
+							<?php } ?>
+						</div>
+					</div>
+					
+					<div class="stuffbox <?php echo $options["links"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-links"><br></div><?php _e("Links"); ?></h3>
+						<div class="inside">
+							<p class="field"><label><?php cf_checkbox("links|enabled", $options["links"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
+						</div>
+					</div>
+					
+					<div class="stuffbox <?php echo $options["comments"]["enabled"] == "on" ? "" : "disabled"; ?>">
+						<h3><div class="icon16 icon-comments"><br></div><?php _e("Comments"); ?></h3>
+						<div class="inside">
+							<p class="field"><label><?php cf_checkbox("comments|enabled", $options["comments"]["enabled"] == "on"); _e("Enabled"); ?></label></p>
+						</div>
+					</div>
+				
+					<div class="stuffbox">
+						<h3><div class="icon16 icon-appearance"><br></div><?php _e("Front End"); ?></h3>
+						<div class="inside">
+						
+							<p><b><?php _e("Remove from Header"); ?></b></p>
+						
+							<ul class="fields">
+								<li><label><?php cf_checkbox("frontend|head_remove|admin_bar_bump", $options["frontend"]["head_remove"]["admin_bar_bump"]  == "on"); _e("Admin Bar Bump"); ?></label></li>
+								<li><label><?php cf_checkbox("frontend|head_remove|generator", $options["frontend"]["head_remove"]["generator"] == "on"); _e("Generator"); ?></label></li>
+								<li><label><?php cf_checkbox("frontend|head_remove|postrel", $options["frontend"]["head_remove"]["postrel"] == "on"); _e("Posts Rel Links"); ?></label></li>
+								<li><label><?php cf_checkbox("frontend|head_remove|remotepub", $options["frontend"]["head_remove"]["remotepub"] == "on"); _e("Remote Publishing"); ?></label></li>
+								<li><label><?php cf_checkbox("frontend|head_remove|rssfeeds", $options["frontend"]["head_remove"]["rssfeeds"] == "on"); _e("RSS Feeds"); ?></label></li>
+							</ul>
+							
 						</div>
 					</div>
 									
 					<div class="stuffbox">
-						<h3><span>Administraton</span></h3>
+						<h3><div class="icon16 icon-tools"><br></div><?php _e("Administration"); ?></h3>
 						<div class="inside">
 						
-							<p><b>Dashboard</b></p>
-						
+							<p><b><?php _e("Dashboard"); ?></b></p>
+							
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","dashboard","right_now"),$options["admin"]["dashboard"]["right_now"]); ?> Right Now</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","recent_comments"),$options["admin"]["dashboard"]["recent_comments"],($options["comments"]["enabled"]!="on")); ?> Recent Comments</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","incoming_links"),$options["admin"]["dashboard"]["incoming_links"]); ?> Incoming Links</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","plugins"),$options["admin"]["dashboard"]["plugins"]); ?> Plugins</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","quickpress"),$options["admin"]["dashboard"]["quickpress"],($options["posts"]["enabled"]!="on")); ?> QuickPress</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","recent_drafts"),$options["admin"]["dashboard"]["recent_drafts"]); ?> Recent Drafts</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","primary"),$options["admin"]["dashboard"]["primary"]); ?> WordPress Blog</label></li>
-								<li><label><?php cf_checkbox(array("admin","dashboard","secondary"),$options["admin"]["dashboard"]["secondary"]); ?> Other WordPress News</label></li>
+								<?php foreach ($this->default_dashboard as $name => $title) { ?>
+									<li><label><?php cf_checkbox("admin|dashboard_remove|", in_array($name, $options["admin"]["dashboard_remove"]), $name); _e($title); ?></label></li>
+								<?php } ?>
 							</ul>
-												
-							<p><b>Menu</b></p>
-						
+							
+							<p><b><?php _e("Widgets"); ?></b></p>
+							
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","menu","pages_before"),$options["admin"]["menu"]["pages_before"],($options["pages"]["enabled"]!="on")); ?> Pages First</label></li>
-								<li><label><?php cf_checkbox(array("admin","menu","hide_plugins"),$options["admin"]["menu"]["hide_plugins"]); ?> Hide Plugins</label></li>
-								<li><label><?php cf_checkbox(array("admin","menu","hide_tools"),$options["admin"]["menu"]["hide_tools"]); ?> Hide Tools</label></li>
+								<?php foreach ($this->default_widgets as $name => $title) { ?>
+									<li><label><?php cf_checkbox("admin|widgets_remove|", in_array($name, $options["admin"]["widgets_remove"]), $name); _e($title); ?></label></li>
+								<?php } ?>
 							</ul>
-																			
-							<p><b>Advanced</b></p>
+							
+							<p><b><?php _e("Advanced"); ?></b></p>
 						
 							<ul class="fields">
-								<li><label><?php cf_checkbox(array("admin","advanced","disable_adminbar"),$options["admin"]["advanced"]["disable_adminbar"]); ?> Disable Admin Bar</label></li>
-								<li><label><?php cf_checkbox(array("admin","advanced","disable_updates"),$options["admin"]["advanced"]["disable_updates"]); ?> Disable Update Checks</label></li>
-								<li><label><?php cf_checkbox(array("admin","advanced","parent_dropdown_all"),$options["admin"]["advanced"]["parent_dropdown_all"]); ?> Parent Select All Posts</label></li>	
-								<li><label><?php cf_checkbox(array("admin","advanced","tinymce_strictpasting"),$options["admin"]["advanced"]["tinymce_strictpasting"]); ?> Strict TinyMCE Pasting</label></li>							
+								<li><label><?php cf_checkbox("admin|advanced|disable_updates", $options["admin"]["advanced"]["disable_updates"] == "on"); _e("Disable Update Checks"); ?></label></li>
+								<li><label><?php cf_checkbox("admin|advanced|parent_dropdown_fix", $options["admin"]["advanced"]["parent_dropdown_fix"] == "on"); _e("Parent Select All Posts"); ?></label></li>	
+								<li><label><?php cf_checkbox("admin|advanced|tinymce_strictpasting", $options["admin"]["advanced"]["tinymce_strictpasting"] == "on"); _e("Strict TinyMCE Pasting"); ?></label></li>
 							</ul>
 												
 						</div>
@@ -185,33 +250,8 @@
 	</form>
 		
 </div>
-<script>
-jQuery(function($){
-	$("h3 .checkbox:first", ".stuffbox").each(function () {
-		var $checkbox = $(this),
-			$stuffbox = $checkbox.closest(".stuffbox"),
-			update_stuffbox = (function () {
-				if ($checkbox.prop("checked")) {
-					$stuffbox.removeClass("disabled");
-				} else {
-					$stuffbox.addClass("disabled");
-				}
-			});
-		update_stuffbox();
-		$checkbox.change(update_stuffbox);
-	});
-	$(".export .textarea:first",".stuffbox").click(function () {
-		$(this).select();
-	});
-});
-</script>
 <?php
-
-function cf_checkbox ($name,$value="",$disabled=false) {
-	echo "<input type=\"checkbox\" name=\"controlfreak[".implode("][",$name)."]\" class=\"checkbox\"".(($value=="on")?" checked":"").(($disabled)?" disabled":"").">";
+function cf_checkbox ($name, $checked=false, $value="", $disabled=false) {
+	echo "<input type=\"checkbox\" name=\"controlfreak[options][".implode("][", explode("|", $name))."]\" class=\"checkbox\"".($checked?" checked":"").($disabled?" disabled":"").($value?" value=\"$value\"":"")."> ";
 }
-function cf_textbox ($name,$value="",$placehoder="",$disabled=false) {
-	echo "<input type=\"text\" name=\"controlfreak[".implode("][",$name)."]\" class=\"textbox\" value=\"$value\" placeholder=\"$placehoder\" ".(($disabled)?" disabled":"").">";
-}
-
 ?>

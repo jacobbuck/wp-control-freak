@@ -9,9 +9,6 @@ input[type="submit"].submitdelete {
 	border-radius: 0;
 	cursor: pointer;
 }
-.stuffbox.disabled .inside {
-	display: none;
-}
 .stuffbox h3 {
 	cursor: default;
 }
@@ -23,26 +20,29 @@ input[type="submit"].submitdelete {
 	vertical-align: baseline;
 	cursor: pointer;
 }
-.stuffbox ul.fields {
+.stuffbox .field {
+	margin: 1em 0;
+}
+.stuffbox .fields {
 	list-style: none;
 	margin: 1em 0;
-	max-width: 655px;
 }
-.stuffbox ul.fields li {
+.stuffbox .fields li {
 	display: inline-block;
-	width: 160px; height: 21px;
+	width: 175px;
 	vertical-align: middle;
 }
-.stuffbox ul.fields li span {
+.stuffbox .fields li span {
 	width: 50px;
 	display: inline-block;
 }
-.stuffbox ul.fields li .checkbox {
+.stuffbox .field .checkbox,
+.stuffbox .fields .checkbox {
 	margin-right: 4px;
 	vertical-align: baseline;
 	cursor: pointer;
 }
-.stuffbox ul.fields li .textbox {
+.stuffbox .fields .textbox {
 	width: 100px;
 }
 .stuffbox.import .inside {
@@ -66,4 +66,7 @@ input[type="submit"].submitdelete {
 	text-align: right;
 	float: right;
 	line-height: 23px;
+}
+.stuffbox.disabled .hide-on-disabled {
+	display: none;
 }
