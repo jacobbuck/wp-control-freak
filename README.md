@@ -13,5 +13,6 @@ A handy little plugin which tweaks some of the core features and settings in Wor
 - Show non-public pages in parent selector
 - And more...
 
+## Download ##
 
 Download from Wordpress.org: http://wordpress.org/extend/plugins/control-freak/
