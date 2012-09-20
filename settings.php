@@ -1,7 +1,13 @@
 <div class="wrap">
 	
 	<div class="icon32" id="icon-options-general"><br></div><h2><?php _e("Control Freak Settings"); ?></h2>
-		
+	
+	<?php
+	if ( ! empty( $_GET['settings-updated'] ) ) {
+		echo '<div class="updated settings-error" id="setting-error-settings_updated"><p><strong>' . __('Settings saved.') . '</strong></p></div>';
+	}
+	?>
+	
 	<form action="" method="post" accept-charset="utf-8">
 		<div class="metabox-holder has-right-sidebar">
 			<div class="inner-sidebar">
@@ -252,4 +258,3 @@
 function cf_checkbox ($name, $checked=false, $value="", $disabled=false) {
 	echo "<input type=\"checkbox\" name=\"controlfreak[options][".implode("][", explode("|", $name))."]\" class=\"checkbox\"".($checked?" checked":"").($disabled?" disabled":"").($value?" value=\"$value\"":"")."> ";
 }
-?>

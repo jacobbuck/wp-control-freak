@@ -3,7 +3,7 @@ Contributors: jacobbuck
 Tags: admin, dashboard, hacks, posts, pages, widgets
 Requires at least: 3.2
 Tested up to: 3.4
-Stable tag: 3.1 alpha 4
+Stable tag: 3.1 alpha 5
 
 A handy little plugin which tweaks some of the core features and settings in WordPress to make it more suitable for your needs.
 
@@ -24,6 +24,10 @@ A handy little plugin which tweaks some of the core features and settings in Wor
 == Changelog ==
 
 Please note users updating from 3.0 to 3.1, your settings will reset to default.
+
+= 3.1 alpha 5 =
+
+* Bug Fix: Fixed a minor issue with 'Settings saved.' notification.
 
 = 3.1 alpha 4 =
 
